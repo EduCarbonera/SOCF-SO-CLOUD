@@ -21,7 +21,6 @@ def obter_metricas_sistema():
     uso_cpu_percent = processo.cpu_percent(interval=0.1)
     
     nome_so = platform.system()
-    # Tenta obter informações de distribuição
     try:
         dist_so = ' '.join(platform.freedesktop_os_release().get('NAME', '')).strip()
     except (AttributeError, OSError):
@@ -37,6 +36,18 @@ def obter_metricas_sistema():
     }
     
     return metricas
+
+
+@app.route('/')
+def rota_principal():
+    """Página inicial com instruções."""
+    return jsonify({
+        "mensagem": "API de Métricas do Sistema",
+        "rotas_disponiveis": {
+            "/info": "Informações dos integrantes",
+            "/metricas": "Métricas do sistema (PID, CPU, Memória, SO)"
+        }
+    })
 
 
 @app.route('/info')
